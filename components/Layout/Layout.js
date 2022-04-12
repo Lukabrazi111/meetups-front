@@ -1,7 +1,10 @@
-import Link from 'next/link';
+import NavLink from 'next/link';
 import Container from './components/Container';
+import { useRouter } from 'next/router';
 
 const Layout = () => {
+    const router = useRouter();
+
     return (
         <header className='py-6 bg-main mb-14'>
             <Container>
@@ -12,16 +15,29 @@ const Layout = () => {
                     <nav>
                         <ul>
                             <li>
-                                <Link href={'/'}>
-                                    <a className='mr-6 text-2xl text-secondary hover:text-white'>
+                                {/*mr-6 text-2xl text-secondary hover:text-white*/}
+                                <NavLink href={'/'}>
+                                    <a
+                                        className={
+                                            router.pathname === '/'
+                                                ? 'mr-6 text-2xl text-white'
+                                                : 'mr-6 text-2xl text-secondary hover:text-white'
+                                        }
+                                    >
                                         All Meetups
                                     </a>
-                                </Link>
-                                <Link href={'/new-meetup'}>
-                                    <a className='text-2xl text-secondary hover:text-white'>
+                                </NavLink>
+                                <NavLink href={'/new-meetup'}>
+                                    <a
+                                        className={
+                                            router.pathname === '/new-meetup'
+                                                ? 'text-2xl text-white'
+                                                : 'text-2xl text-secondary hover:text-white'
+                                        }
+                                    >
                                         Add New Meetup
                                     </a>
-                                </Link>
+                                </NavLink>
                             </li>
                         </ul>
                     </nav>
