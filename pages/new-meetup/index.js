@@ -1,54 +1,118 @@
 import { Fragment } from 'react';
-import Container from '../../components/Layout/components/Container';
 import Card from '../../components/UI/Card';
 import Layout from '../../components/Layout/Layout';
+import { useForm } from 'react-hook-form';
 
 const NewMeetup = () => {
+    const {
+        register,
+        handleSubmit,
+        watch,
+        formState: { errors },
+    } = useForm({
+        mode: 'onChange',
+        defaultValues: {
+            title: '',
+            image: '',
+            address: '',
+            description: '',
+        },
+    });
+
+    const imageUrl = watch('image');
+
+    const submitFormHandler = (data) => {
+        console.log(data);
+    };
+
     return (
         <Fragment>
             <Layout />
             <div className='w-1/2 m-auto'>
                 <Card>
                     <form
+                        onSubmit={handleSubmit(submitFormHandler)}
                         action='#'
                         method='post'
                         className='flex flex-col px-4 py-3 space-y-2'
                     >
                         <label htmlFor='title'>Meetup Title</label>
                         <input
+                            {...register('title', {
+                                required: 'The title field is required',
+                                minLength: {
+                                    value: 3,
+                                    message:
+                                        'The title must be at least 3 characters',
+                                },
+                            })}
                             className='border border-main px-2 py-2 rounded outline-0'
                             type='text'
                             id='title'
                             name='title'
                         />
-                        {/*<small className="text-red-500">{{$message}}</small>*/}
+                        {errors.title && (
+                            <small className='text-red-500'>
+                                {errors.title?.message}
+                            </small>
+                        )}
 
                         <label htmlFor='image'>Meetup Image</label>
                         <input
+                            {...register('image', {
+                                required: '*This field must be url',
+                            })}
                             className='border border-main px-2 py-2 rounded outline-0'
-                            type='url'
                             id='image'
                             name='image'
                         />
-                        {/*<small className="text-red-500">{{$message}}</small>*/}
+                        {!imageUrl.startsWith('https') && (
+                            <small className='text-red-500'>
+                                *This field must be url
+                            </small>
+                        )}
 
                         <label htmlFor='address'>Address</label>
                         <input
+                            {...register('address', {
+                                required: 'The address field is required',
+                                minLength: {
+                                    value: 3,
+                                    message:
+                                        'The address must be at least 3 characters',
+                                },
+                            })}
                             className='border border-main px-2 py-2 rounded outline-0'
                             type='text'
                             id='address'
                             name='address'
                         />
-                        {/*<small className="text-red-500">{{$message}}</small>*/}
+                        {errors.address && (
+                            <small className='text-red-500'>
+                                {errors.address?.message}
+                            </small>
+                        )}
 
                         <label htmlFor='description'>Description</label>
                         <textarea
+                            {...register('description', {
+                                required: 'The description field is required',
+                                minLength: {
+                                    value: 10,
+                                    message:
+                                        'The description must be at least 10 characters',
+                                },
+                            })}
                             className='border border-main px-2 py-2 rounded outline-0'
                             id='description'
                             rows='5'
                             name='description'
                         />
-                        {/*<small className="text-red-500">{{$message}}</small>*/}
+                        {errors.description && (
+                            <small className='text-red-500'>
+                                {errors.description?.message}
+                            </small>
+                        )}
 
                         <div className='flex justify-end'>
                             <button

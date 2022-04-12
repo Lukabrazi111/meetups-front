@@ -1,10 +1,9 @@
-import NavLink from 'next/link';
+import Link from 'next/link';
 import Container from './components/Container';
 import { useRouter } from 'next/router';
 
 const Layout = () => {
     const router = useRouter();
-
     return (
         <header className='py-6 bg-main mb-14'>
             <Container>
@@ -15,8 +14,7 @@ const Layout = () => {
                     <nav>
                         <ul>
                             <li>
-                                {/*mr-6 text-2xl text-secondary hover:text-white*/}
-                                <NavLink href={'/'}>
+                                <Link href={'/'}>
                                     <a
                                         className={
                                             router.pathname === '/'
@@ -26,8 +24,8 @@ const Layout = () => {
                                     >
                                         All Meetups
                                     </a>
-                                </NavLink>
-                                <NavLink href={'/new-meetup'}>
+                                </Link>
+                                <Link href={'/new-meetup'}>
                                     <a
                                         className={
                                             router.pathname === '/new-meetup'
@@ -37,7 +35,7 @@ const Layout = () => {
                                     >
                                         Add New Meetup
                                     </a>
-                                </NavLink>
+                                </Link>
                             </li>
                         </ul>
                     </nav>
