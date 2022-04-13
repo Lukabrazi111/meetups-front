@@ -7,7 +7,6 @@ import Container from '../components/Layout/components/Container';
 
 export const getStaticProps = async (context) => {
     const meetupId = context.params.meetupId;
-    // fetch data
     const response = await fetch(
         `http://127.0.0.1:8000/api/meetups/${meetupId}`
     );
@@ -17,13 +16,25 @@ export const getStaticProps = async (context) => {
         props: {
             meetups: data,
         },
+        revalidate: 10,
     };
 };
 
 export const getStaticPaths = async () => {
+    const response = await fetch(`http://127.0.0.1:8000/api/meetups`);
+    const data = await response.json();
+
+    const paths = data.map((meetup) => {
+        return {
+            params: {
+                meetupId: meetup.id.toString(),
+            },
+        };
+    });
+
     return {
-        paths: [],
-        fallback: 'blocking',
+        paths,
+        fallback: false,
     };
 };
 
