@@ -42,7 +42,7 @@ const MeetupDetails = ({ meetups }) => {
     return (
         <Fragment>
             <Layout />
-            <Container className={'max-w-2xl'}>
+            <Container className={'max-w-xl'}>
                 <Card>
                     <div>
                         <Image

@@ -6,7 +6,7 @@ const Layout = () => {
     const router = useRouter();
     return (
         <header className='py-6 bg-main mb-14'>
-            <Container>
+            <Container className={'max-w-5xl'}>
                 <div className='flex justify-between items-center'>
                     <h1 className='text-3xl text-white font-bold'>
                         React Meetups
