@@ -62,6 +62,7 @@ const NewMeetup = () => {
                             {...register('image', {
                                 required: '*This field must be url',
                             })}
+                            type='url'
                             className='border border-main px-2 py-2 rounded outline-0'
                             id='image'
                             name='image'
