@@ -1,4 +1,7 @@
 import { Fragment } from 'react';
+
+import Link from 'next/link';
+import Image from 'next/image';
 import Layout from '../components/Layout/Layout';
 import Container from '../components/Layout/components/Container';
 import Card from '../components/UI/Card';
@@ -26,14 +29,18 @@ export default function Home({ meetups }) {
         <Fragment>
             <Layout />
             {meetups.map((meetup) => (
-                <main key={meetup.id} className='w-1/2 m-auto pb-5'>
+                <main key={meetup.id} className='w-full max-w-xl m-auto pb-5'>
                     <Container>
                         <Card className='mb-5'>
-                            <div className='w-full h-80 overflow-hidden'>
-                                <img
+                            <div className='w-full overflow-hidden'>
+                                <Image
                                     className='object-cover rounded-t-2xl w-full h-full'
                                     src={meetup.image}
                                     alt={meetup.title}
+                                    layout={'responsive'}
+                                    width={900}
+                                    height={500}
+                                    priority
                                 />
                             </div>
 
@@ -44,12 +51,11 @@ export default function Home({ meetups }) {
                                 <p className='italic'>{meetup.address}</p>
 
                                 <div className='pt-2'>
-                                    <a
-                                        className='px-4 py-2 border border-main rounded transition-colors hover:text-white hover:bg-main'
-                                        href={meetup.id}
-                                    >
-                                        Show Details
-                                    </a>
+                                    <Link href={'/' + meetup.id}>
+                                        <a className='px-4 py-2 border border-main rounded transition-colors hover:text-white hover:bg-main'>
+                                            Show Details
+                                        </a>
+                                    </Link>
                                 </div>
                             </div>
                         </Card>
