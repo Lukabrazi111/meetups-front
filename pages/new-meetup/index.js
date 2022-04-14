@@ -1,8 +1,8 @@
-import { Fragment, useEffect, useState } from 'react';
+import {Fragment, useEffect, useState} from 'react';
 import Card from '../../components/UI/Card';
 import Layout from '../../components/Layout/Layout';
-import { useForm } from 'react-hook-form';
-import { useRouter } from 'next/router';
+import {useForm} from 'react-hook-form';
+import {useRouter} from 'next/router';
 import Notifications from '../../components/UI/Notifications';
 
 const NewMeetup = () => {
@@ -24,7 +24,8 @@ const NewMeetup = () => {
         register,
         handleSubmit,
         watch,
-        formState: { errors },
+        reset,
+        formState: {errors},
     } = useForm({
         mode: 'onChange',
         defaultValues: {
@@ -54,6 +55,7 @@ const NewMeetup = () => {
             const dataHandler = await response.json();
             setMessage(dataHandler.message);
             setRequestStatus('success');
+            reset();
         } catch (e) {
             setMessage(e.message);
             setRequestStatus('error');
@@ -91,7 +93,7 @@ const NewMeetup = () => {
                     status={notification.status}
                 />
             )}
-            <Layout />
+            <Layout/>
             <div className='w-1/2 m-auto'>
                 <Card>
                     <form
