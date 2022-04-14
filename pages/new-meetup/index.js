@@ -1,11 +1,24 @@
-import { Fragment } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import Card from '../../components/UI/Card';
 import Layout from '../../components/Layout/Layout';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/router';
+import Notifications from '../../components/UI/Notifications';
 
 const NewMeetup = () => {
     const router = useRouter();
+    const [requestStatus, setRequestStatus] = useState();
+    const [message, setMessage] = useState('');
+
+    useEffect(() => {
+        if (requestStatus === 'success' || requestStatus === 'error') {
+            const timer = setTimeout(() => {
+                setMessage(null);
+                setRequestStatus(null);
+            }, 3000);
+            return () => clearTimeout(timer);
+        }
+    }, [requestStatus]);
 
     const {
         register,
@@ -25,28 +38,59 @@ const NewMeetup = () => {
     const imageUrl = watch('image');
 
     const submitFormHandler = async (data) => {
-        const options = {
-            method: 'POST',
-            body: JSON.stringify(data),
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        };
+        setRequestStatus('pending');
 
-        const response = await fetch(
-            'http://127.0.0.1:8000/api/new-meetups',
-            options
-        );
-
-        const dataHandler = await response.json();
-
-        if (response.ok) {
-            return router.push('/');
+        try {
+            const response = await fetch(
+                'http://127.0.0.1:8000/api/new-meetups',
+                {
+                    method: 'POST',
+                    body: JSON.stringify(data),
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                }
+            );
+            const dataHandler = await response.json();
+            setMessage(dataHandler.message);
+            setRequestStatus('success');
+        } catch (e) {
+            setMessage(e.message);
+            setRequestStatus('error');
         }
     };
 
+    let notification;
+
+    if (requestStatus === 'pending') {
+        notification = {
+            title: 'Sending request...',
+            status: 'pending',
+        };
+    }
+
+    if (requestStatus === 'success') {
+        notification = {
+            title: message,
+            status: 'success',
+        };
+    }
+
+    if (requestStatus === 'error') {
+        notification = {
+            title: 'Error!',
+            status: 'error',
+        };
+    }
+
     return (
         <Fragment>
+            {notification && (
+                <Notifications
+                    title={notification.title}
+                    status={notification.status}
+                />
+            )}
             <Layout />
             <div className='w-1/2 m-auto'>
                 <Card>
