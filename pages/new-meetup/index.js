@@ -2,8 +2,11 @@ import { Fragment } from 'react';
 import Card from '../../components/UI/Card';
 import Layout from '../../components/Layout/Layout';
 import { useForm } from 'react-hook-form';
+import { useRouter } from 'next/router';
 
 const NewMeetup = () => {
+    const router = useRouter();
+
     const {
         register,
         handleSubmit,
@@ -21,8 +24,25 @@ const NewMeetup = () => {
 
     const imageUrl = watch('image');
 
-    const submitFormHandler = (data) => {
-        console.log(data);
+    const submitFormHandler = async (data) => {
+        const options = {
+            method: 'POST',
+            body: JSON.stringify(data),
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        };
+
+        const response = await fetch(
+            'http://127.0.0.1:8000/api/new-meetups',
+            options
+        );
+
+        const dataHandler = await response.json();
+
+        if (response.ok) {
+            return router.push('/');
+        }
     };
 
     return (

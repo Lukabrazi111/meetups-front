@@ -5,21 +5,6 @@ import Layout from '../components/Layout/Layout';
 import Card from '../components/UI/Card';
 import Container from '../components/Layout/components/Container';
 
-export const getStaticProps = async (context) => {
-    const meetupId = context.params.meetupId;
-    const response = await fetch(
-        `http://127.0.0.1:8000/api/meetups/${meetupId}`
-    );
-    const data = await response.json();
-
-    return {
-        props: {
-            meetups: data,
-        },
-        revalidate: 10,
-    };
-};
-
 export const getStaticPaths = async () => {
     const response = await fetch(`http://127.0.0.1:8000/api/meetups`);
     const data = await response.json();
@@ -35,6 +20,21 @@ export const getStaticPaths = async () => {
     return {
         paths,
         fallback: false,
+    };
+};
+
+export const getStaticProps = async (context) => {
+    const meetupId = context.params.meetupId;
+    const response = await fetch(
+        `http://127.0.0.1:8000/api/meetups/${meetupId}`
+    );
+    const data = await response.json();
+
+    return {
+        props: {
+            meetups: data,
+        },
+        revalidate: 10,
     };
 };
 
